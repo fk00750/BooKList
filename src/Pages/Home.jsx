@@ -1,45 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import BooksDetail from "../Components/BooksDetail";
+import { useBookListContext } from "../Hooks/useBookListContext";
 
 function Home() {
-  const [books, setBooks] = useState(null);
+  const {books , dispatch} = useBookListContext()
 
   useEffect(() => {
     const fetchBooksData = async function () {
-      const booksInfo = [
-        {
-          id: 5,
-          title: "Winter in April",
-          author: "author fifth",
-          summary: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-        },
-        {
-          id: 4,
-          title: "The last Night",
-          author: "author fourth",
-          summary: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-        },
-        {
-          id: 3,
-          title: "Still Alive",
-          author: "author third",
-          summary: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-        },
-        {
-          id: 2,
-          title: "Blood Money",
-          author: "author second",
-          summary: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-        },
-        {
-          id: 1,
-          title: "Born to kill",
-          author: "author first",
-          summary: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-        },
-      ];
-      setBooks(booksInfo);
+      const response = await fetch("http://localhost:3000/api/v1/booklist");
+      const json = await response.json();
+
+      if (response.ok) {
+        dispatch({type:"SET_BOOKS", payload:json.AllBooks})
+      }
     };
 
     fetchBooksData();
@@ -53,7 +27,7 @@ function Home() {
       <div className="books">
         {books &&
           books.map((book, index) => (
-            <BooksDetail book={book} key={book.id} index={index} />
+            <BooksDetail book={book} key={book._id} index={index} />
           ))}
       </div>
     </div>
