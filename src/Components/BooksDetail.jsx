@@ -1,6 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useBookListContext } from "../Hooks/useBookListContext";
+import BookForm from "./BookForm";
 
 function BooksDetail({ book, index }) {
+  const { dispatch } = useBookListContext();
+
+  const Edit_handleClick =  () => {
+    console.log('e')
+    return <BookForm data={book.title}></BookForm>
+  };
+
+  const Delete_handleClick = async () => {
+    const response = await fetch(
+      "http://localhost:3000/api/v1/booklist/" + book._id,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({ type: "DELETE_BOOK", payload: json.book });
+    }
+  };
+
   return (
     <div className="book-details my-10">
       <dl className="books__list m-2">
@@ -17,15 +42,31 @@ function BooksDetail({ book, index }) {
             </div>
             <div>
               <dt className="text-sm font-mono text-gray-700">Book Author</dt>
-              <dd className="text-xl bg-gray-300 text-center rounded-md m-2 p-1">{book.author}</dd>
+              <dd className="text-xl bg-gray-300 text-center rounded-md m-2 p-1">
+                {book.author}
+              </dd>
             </div>
             <div>
               <dt className="text-sm font-mono text-gray-700">Book Summary</dt>
-              <dd className="text-base bg-gray-300 text-center rounded-md m-2 p-2 mb-4">{book.summary}</dd>
+              <dd className="text-base bg-gray-300 text-center rounded-md m-2 p-2 mb-4">
+                {book.summary}
+              </dd>
             </div>
             <div className="edit_dlt--btn space-x-2">
-              <button className="bg-green-600 h-7 w-10 rounded-lg">Edit</button>
-              <button className="bg-red-600 h-7 w-16 rounded-lg">Delete</button>
+              <Link to="/form">
+                <button
+                  onClick={Edit_handleClick}
+                  className="bg-green-600 h-7 w-10 rounded-lg"
+                >
+                  Edit
+                </button>
+              </Link>
+              <button
+                onClick={Delete_handleClick}
+                className="bg-red-600 h-7 w-16 rounded-lg"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>

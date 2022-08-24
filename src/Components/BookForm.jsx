@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useBookListContext } from "../Hooks/useBookListContext";
 
-function BookForm() {
-  const {dispatch} = useBookListContext()
+function BookForm(props) {
+  console.log(props);
+  const { dispatch } = useBookListContext();
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -13,7 +14,7 @@ function BookForm() {
     e.preventDefault();
 
     const books = { title, author, summary };
-    console.log(books)
+    console.log(books);
 
     const response = await fetch("http://localhost:3000/api/v1/booklist", {
       method: "POST",
@@ -35,7 +36,7 @@ function BookForm() {
       setSummary("");
       setError(null);
       console.log("New workout is Added ", json);
-      dispatch({type: "CREATE_BOOK", payload: json})
+      dispatch({ type: "CREATE_BOOK", payload: json });
     }
   };
 
