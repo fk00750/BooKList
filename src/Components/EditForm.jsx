@@ -1,22 +1,32 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useBookListContext } from "../Hooks/useBookListContext";
 
-function BookForm() {
+function EditForm() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const {
+    _id,
+    title:newTitle,
+    author:newAuthor,
+    summary:newSummary,
+  } = location.state.book;
+
+
   const { dispatch } = useBookListContext();
 
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [summary, setSummary] = useState("");
+  const [title, setNewTitle] = useState(newTitle);
+  const [author, setNewAuthor] = useState(newAuthor);
+  const [summary, setNewSummary] = useState(newSummary);
   const [Error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const books = { title, author, summary };
-    console.log(books);
 
-    const response = await fetch("http://localhost:3000/api/v1/booklist", {
-      method: "POST",
+    const response = await fetch("http://localhost:3000/api/v1/booklist/" + _id, {
+      method: "PATCH",
       body: JSON.stringify(books),
       headers: {
         "Content-Type": "application/json",
@@ -30,12 +40,13 @@ function BookForm() {
     }
 
     if (response.ok) {
-      setTitle("");
-      setAuthor("");
-      setSummary("");
+      setNewTitle("");
+      setNewAuthor("");
+      setNewSummary("");
       setError(null);
-      console.log("New workout is Added ", json);
-      dispatch({ type: "CREATE_BOOK", payload: json });
+      console.log("Book is Updated ", json);
+      navigate('/')
+    //   dispatch({ type: "CREATE_BOOK", payload: json });
     }
   };
 
@@ -51,7 +62,7 @@ function BookForm() {
           </label>
           <input
             type="text"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setNewTitle(e.target.value)}
             value={title}
             id="title"
             className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -69,7 +80,7 @@ function BookForm() {
           <input
             type="text"
             id="author"
-            onChange={(e) => setAuthor(e.target.value)}
+            onChange={(e) => setNewAuthor(e.target.value)}
             value={author}
             className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Enter the Name of Book Author"
@@ -87,7 +98,7 @@ function BookForm() {
             id="summary"
             cols="15"
             rows="5"
-            onChange={(e) => setSummary(e.target.value)}
+            onChange={(e) => setNewSummary(e.target.value)}
             value={summary}
             className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Write down the Summary of Book..."
@@ -97,7 +108,7 @@ function BookForm() {
           type="sumbit"
           className="text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2 text-center hover:bg-blue-800"
         >
-          Add
+          Update
         </button>
         {Error && <div className="error">{Error}</div>}
       </form>
@@ -105,4 +116,4 @@ function BookForm() {
   );
 }
 
-export default BookForm;
+export default EditForm;

@@ -6,10 +6,10 @@ import BookForm from "./BookForm";
 function BooksDetail({ book, index }) {
   const { dispatch } = useBookListContext();
 
-  const Edit_handleClick =  () => {
-    console.log('e')
-    return <BookForm data={book.title}></BookForm>
-  };
+  // const Edit_handleClick =  () => {
+  //   console.log('e')
+  //   return <BookForm data={book.title}></BookForm>
+  // };
 
   const Delete_handleClick = async () => {
     const response = await fetch(
@@ -53,9 +53,8 @@ function BooksDetail({ book, index }) {
               </dd>
             </div>
             <div className="edit_dlt--btn space-x-2">
-              <Link to="/form">
+              <Link to="/editform" state={{book : book}}>
                 <button
-                  onClick={Edit_handleClick}
                   className="bg-green-600 h-7 w-10 rounded-lg"
                 >
                   Edit
