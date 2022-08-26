@@ -25,7 +25,7 @@ function EditForm() {
 
     const books = { title, author, summary };
 
-    const response = await fetch("http://localhost:3000/api/v1/booklist/" + _id, {
+    const response = await fetch("https://booklist00.herokuapp.com/api/v1/booklist/" + _id, {
       method: "PATCH",
       body: JSON.stringify(books),
       headers: {

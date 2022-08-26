@@ -8,7 +8,7 @@ function Home() {
 
   useEffect(() => {
     const fetchBooksData = async function () {
-      const response = await fetch("http://localhost:3000/api/v1/booklist");
+      const response = await fetch("https://booklist00.herokuapp.com/api/v1/booklist");
       const json = await response.json();
 
       if (response.ok) {

@@ -13,7 +13,7 @@ function BooksDetail({ book, index }) {
 
   const Delete_handleClick = async () => {
     const response = await fetch(
-      "http://localhost:3000/api/v1/booklist/" + book._id,
+      "https://booklist00.herokuapp.com/api/v1/booklist" + book._id,
       {
         method: "DELETE",
       }

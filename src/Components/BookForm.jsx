@@ -15,7 +15,7 @@ function BookForm() {
     const books = { title, author, summary };
     console.log(books);
 
-    const response = await fetch("http://localhost:3000/api/v1/booklist", {
+    const response = await fetch("https://booklist00.herokuapp.com/api/v1/booklist", {
       method: "POST",
       body: JSON.stringify(books),
       headers: {
